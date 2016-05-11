@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" monitorInterval="30">
+
+    <Properties>
+        <Property name="log-path">../logs</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="file-log" fileName="${log-path}/notifier-server.log"
+                     filePattern="${log-path}/notifier-server-%i.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="30 MB" />
+                <DefaultRolloverStrategy>10</DefaultRolloverStrategy>
+                <!--<TimeBasedTriggeringPolicy interval="1" modulate="true"/>-->
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug" additivity="false">
+            <appender-ref ref="file-log"/>
+        </Root>
+    </Loggers>
+</Configuration>

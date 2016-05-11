@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+
+    <display-name>Notifier-Services Application</display-name>
+
+    <!-- **************************** -->
+    <!-- * Log4J Dispatcher Servlet * -->
+    <!-- **************************** -->
+
+    <!-- TODO: log4j configuration should be located outside of the war -->
+    <context-param>
+        <param-name>log4jConfiguration</param-name>
+        <param-value>/WEB-INF/classes/log4j2.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+    </listener>
+
+
+    <!-- ***************************** -->
+    <!-- * Spring Dispatcher Servlet * -->
+    <!-- ***************************** -->
+
+    <!-- Bootstrap listener to start up and shut down Spring's root WebApplicationContext -->
+    <!-- ContextLoaderListener requires configuration of the context config location -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:application-core-context.xml
+            classpath:application-db-context.xml
+            classpath:application-security-context.xml
+        </param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- Enables Spring Security -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>
+            org.springframework.web.filter.DelegatingFilterProxy
+        </filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>iot-services</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:application-web-context.xml</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>notifier-services</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- *************************************** -->
+    <!-- * Application Specific Configurations * -->
+    <!-- *************************************** -->
+
+    <!-- Application specific context listener -->
+    <listener>
+        <listener-class>com.patimer.notifier.ApplicationContextListener</listener-class>
+    </listener>
+
+    <!-- ==================== Default Session Configuration ================= -->
+    <!-- You can set the default session timeout (in minutes) for all newly created sessions by modifying the value below.                       -->
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+
+</web-app>
