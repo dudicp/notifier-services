@@ -15,12 +15,10 @@ import java.util.UUID;
 @Component
 public class SearcherDaoImpl extends ManagedEntityDaoImpl<SearcherEntity> implements SearcherDao
 {
-    private final static String COLLECTION_NAME = "searchers";
-
     @Autowired
     public SearcherDaoImpl(MongoTemplate mongoTemplate, EntityValidator validator)
     {
-        super(mongoTemplate, validator, COLLECTION_NAME, SearcherEntity.class);
+        super(mongoTemplate, validator, DbCollectionType.Searchers, SearcherEntity.class);
     }
 
     @Override
@@ -29,6 +27,6 @@ public class SearcherDaoImpl extends ManagedEntityDaoImpl<SearcherEntity> implem
         Validate.notNull(accountId);
 
         Query byAccountId = new Query(Criteria.where("accountId").is(accountId));
-        return mongoTemplate.find(byAccountId, SearcherEntity.class, COLLECTION_NAME);
+        return mongoTemplate.find(byAccountId, SearcherEntity.class, DbCollectionType.Searchers.getDbTableName());
     }
 }

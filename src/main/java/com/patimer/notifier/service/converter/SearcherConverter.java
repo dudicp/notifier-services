@@ -31,6 +31,7 @@ public class SearcherConverter
                 dto.getAccountId(),
                 dto.getName(),
                 dto.getDescription(),
+                dto.getItemType().toItemType(),
                 predicateEntity,
                 sourceWebsiteEntities
             );
@@ -128,6 +129,7 @@ public class SearcherConverter
                 entity.getAccountId(),
                 entity.getName(),
                 entity.getDescription(),
+                ItemTypeDto.fromItemType(entity.getItemType()),
                 predicateDto,
                 sourceWebsiteDtos
             );

@@ -21,6 +21,9 @@ public class SearcherEntity extends ManagedEntity
     private String description;
 
     @NotNull
+    private ItemType itemType;
+
+    @NotNull
     private PredicateEntity predicateEntity;
 
     @NotEmpty
@@ -32,6 +35,7 @@ public class SearcherEntity extends ManagedEntity
         UUID accountId,
         String name,
         String description,
+        ItemType itemType,
         PredicateEntity predicateEntity,
         Set<SourceWebsiteEntity> sourceWebsites
     )
@@ -40,6 +44,7 @@ public class SearcherEntity extends ManagedEntity
         this.accountId = accountId;
         this.name = name;
         this.description = description;
+        this.itemType = itemType;
         this.predicateEntity = predicateEntity;
         this.sourceWebsites = sourceWebsites;
     }
@@ -51,6 +56,7 @@ public class SearcherEntity extends ManagedEntity
         UUID accountId,
         String name,
         String description,
+        ItemType itemType,
         PredicateEntity predicateEntity,
         Set<SourceWebsiteEntity> sourceWebsites
     )
@@ -59,6 +65,7 @@ public class SearcherEntity extends ManagedEntity
         this.accountId = accountId;
         this.name = name;
         this.description = description;
+        this.itemType = itemType;
         this.predicateEntity = predicateEntity;
         this.sourceWebsites = sourceWebsites;
     }
@@ -69,6 +76,7 @@ public class SearcherEntity extends ManagedEntity
         this.accountId = other.getAccountId();
         this.name = other.getName();
         this.description = other.getDescription();
+        this.itemType = other.getItemType();
         this.predicateEntity = other.getPredicateEntity();
         this.sourceWebsites = new HashSet<>(other.getSourceWebsites());
     }
@@ -101,6 +109,16 @@ public class SearcherEntity extends ManagedEntity
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public ItemType getItemType()
+    {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType)
+    {
+        this.itemType = itemType;
     }
 
     public PredicateEntity getPredicateEntity()

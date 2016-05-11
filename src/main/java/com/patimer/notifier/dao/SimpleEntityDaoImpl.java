@@ -1,81 +1,59 @@
 package com.patimer.notifier.dao;
 
-import com.patimer.notifier.model.ManagedEntity;
-import com.patimer.notifier.service.validation.EntityValidator;
 import com.patimer.notifier.service.exception.NotFoundException;
+import com.patimer.notifier.service.validation.EntityValidator;
 import org.apache.commons.lang.Validate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
-
-public abstract class ManagedEntityDaoImpl<T extends ManagedEntity>
+public class SimpleEntityDaoImpl<T,U>
 {
     protected MongoTemplate mongoTemplate;
     protected EntityValidator validator;
     protected DbCollectionType dbCollectionType;
     protected Class<T> clazz;
+    protected String idPropertyName;
 
-    public ManagedEntityDaoImpl(
+    public SimpleEntityDaoImpl(
         MongoTemplate mongoTemplate,
         EntityValidator validator,
         DbCollectionType dbCollectionType,
-        Class<T> clazz)
+        Class<T> clazz,
+        String idPropertyName
+    )
     {
         Validate.notNull(mongoTemplate);
         Validate.notNull(validator);
         Validate.notNull(dbCollectionType);
         Validate.notNull(clazz);
+        Validate.notEmpty(idPropertyName);
 
         this.mongoTemplate = mongoTemplate;
         this.validator = validator;
         this.dbCollectionType = dbCollectionType;
         this.clazz = clazz;
+        this.idPropertyName = idPropertyName;
     }
 
-    public T create(T entity)
+    public T upsert(T entity)
     {
         Validate.notNull(entity);
-
-        UUID generatedId = UUID.randomUUID();
-        Date currentDate = getCurrentDate();
-        entity.setId(generatedId);
-        entity.setCreatedOn(currentDate);
-        entity.setModifiedOn(currentDate);
-
         validator.validate(entity);
         mongoTemplate.save(entity, dbCollectionType.getDbTableName());
-
         return entity;
     }
 
-    public T update(T mergedEntity)
-    {
-        Validate.notNull(mergedEntity);
-
-        Date currentDate = getCurrentDate();
-        mergedEntity.setModifiedOn(currentDate);
-        validator.validate(mergedEntity);
-
-        validateExists(mergedEntity.getId());
-        mongoTemplate.save(mergedEntity, dbCollectionType.getDbTableName());
-
-        return mergedEntity;
-    }
-
-    public void delete(UUID id) throws NotFoundException
+    public void delete(U id) throws NotFoundException
     {
         Validate.notNull(id);
 
         validateExists(id);
-        Query byId = new Query(Criteria.where("id").is(id));
+        Query byId = new Query(Criteria.where(idPropertyName).is(id));
         mongoTemplate.remove(byId, clazz, dbCollectionType.getDbTableName());
     }
 
-    public T getById(UUID id) throws NotFoundException
+    public T getById(U id) throws NotFoundException
     {
         Validate.notNull(id);
 
@@ -88,13 +66,15 @@ public abstract class ManagedEntityDaoImpl<T extends ManagedEntity>
         return existingEntity;
     }
 
-    private void validateExists(UUID id)
+    public T findById(U id)
     {
-        getById(id);
+        Validate.notNull(id);
+
+        return mongoTemplate.findById(id, clazz, dbCollectionType.getDbTableName());
     }
 
-    private Date getCurrentDate()
+    private void validateExists(U id)
     {
-        return Calendar.getInstance().getTime();
+        getById(id);
     }
 }

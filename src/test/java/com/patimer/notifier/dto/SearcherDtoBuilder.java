@@ -9,6 +9,7 @@ public class SearcherDtoBuilder extends ManagedObjectBuilder<SearcherDtoBuilder>
     private UUID accountId = UUID.randomUUID();
     private String name = "Ben-Gurion, Holon";
     private String description = null;
+    private ItemTypeDto itemType = ItemTypeDto.Apartment;
     private PredicateDto predicate = new PredicateDtoBuilder().build();
     private Set<SourceWebsiteDto> sourceWebsites = Collections.singleton(new SourceWebsiteDtoBuilder().build());
 
@@ -27,6 +28,12 @@ public class SearcherDtoBuilder extends ManagedObjectBuilder<SearcherDtoBuilder>
     public SearcherDtoBuilder withDescription(String description)
     {
         this.description = description;
+        return this;
+    }
+
+    public SearcherDtoBuilder withItemType(ItemTypeDto itemType)
+    {
+        this.itemType = itemType;
         return this;
     }
 
@@ -51,6 +58,7 @@ public class SearcherDtoBuilder extends ManagedObjectBuilder<SearcherDtoBuilder>
             accountId,
             name,
             description,
+            itemType,
             predicate,
             sourceWebsites
         );

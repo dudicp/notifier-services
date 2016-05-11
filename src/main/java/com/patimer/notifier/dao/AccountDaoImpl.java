@@ -13,12 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountDaoImpl extends ManagedEntityDaoImpl<AccountEntity> implements AccountDao
 {
-    private final static String COLLECTION_NAME = "accounts";
-
     @Autowired
     public AccountDaoImpl(MongoTemplate mongoTemplate, EntityValidator validator)
     {
-        super(mongoTemplate, validator, COLLECTION_NAME, AccountEntity.class);
+        super(mongoTemplate, validator, DbCollectionType.Accounts, AccountEntity.class);
     }
 
     @Override
@@ -27,6 +25,6 @@ public class AccountDaoImpl extends ManagedEntityDaoImpl<AccountEntity> implemen
         Validate.notEmpty(mail);
 
         Query byMail = new Query(Criteria.where("mail").is(mail));
-        return mongoTemplate.findOne(byMail, AccountEntity.class, COLLECTION_NAME);
+        return mongoTemplate.findOne(byMail, AccountEntity.class, DbCollectionType.Accounts.getDbTableName());
     }
 }

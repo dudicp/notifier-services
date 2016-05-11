@@ -1,7 +1,10 @@
 package com.patimer.notifier.service.notification;
 
+import com.patimer.notifier.model.ItemType;
+import com.patimer.notifier.model.item.SearchedItem;
 import com.patimer.notifier.service.mail.MailMessage;
 import com.patimer.notifier.service.mail.MailSender;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.StringWriter;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class NotificationServiceImpl implements NotificationService
@@ -80,5 +84,12 @@ public class NotificationServiceImpl implements NotificationService
             );
 
         mailSender.send(mailMessage);
+    }
+
+    @Override
+    public void sendFoundNewItems(String email, ItemType itemsType, List<SearchedItem> foundItems)
+    {
+        // TODO: implement
+        throw new NotImplementedException();
     }
 }

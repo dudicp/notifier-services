@@ -9,6 +9,7 @@ public class SearcherEntityBuilder extends ManagedEntityBuilder<SearcherEntityBu
     private UUID accountId = UUID.randomUUID();
     private String name = "Ben-Gurion, Holon";
     private String description = null;
+    private ItemType itemType = ItemType.Apartment;
     private PredicateEntity predicateEntity = new PredicateEntityBuilder().build();
     private Set<SourceWebsiteEntity> sourceWebsites = Collections.singleton(new SourceWebsiteEntityBuilder().build());
 
@@ -27,6 +28,12 @@ public class SearcherEntityBuilder extends ManagedEntityBuilder<SearcherEntityBu
     public SearcherEntityBuilder withDescription(String description)
     {
         this.description = description;
+        return this;
+    }
+
+    public SearcherEntityBuilder withItemType(ItemType itemType)
+    {
+        this.itemType = itemType;
         return this;
     }
 
@@ -51,6 +58,7 @@ public class SearcherEntityBuilder extends ManagedEntityBuilder<SearcherEntityBu
             accountId,
             name,
             description,
+            itemType,
             predicateEntity,
             sourceWebsites
         );

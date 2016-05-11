@@ -36,6 +36,7 @@ public class TestSearcherConverter
         TestUtils.assertEqualsIncludeNull(dto.getAccountId(), entity.getAccountId());
         TestUtils.assertEqualsIncludeNull(dto.getName(), entity.getName());
         TestUtils.assertEqualsIncludeNull(dto.getDescription(), entity.getDescription());
+        TestUtils.assertEqualsIncludeNull(dto.getItemType().toItemType(), entity.getItemType());
         assertPredicateEquals(dto.getPredicate(), entity.getPredicateEntity());
         assertSourceWebsiteEquals(dto.getSourceWebsites(), entity.getSourceWebsites());
     }
@@ -78,6 +79,7 @@ public class TestSearcherConverter
         TestUtils.assertEqualsIncludeNull(entity.getCreatedOn(), mergedEntity.getCreatedOn());
         TestUtils.assertEqualsIncludeNull(entity.getModifiedOn(), mergedEntity.getModifiedOn());
         TestUtils.assertEqualsIncludeNull(entity.getAccountId(), mergedEntity.getAccountId());
+        TestUtils.assertEqualsIncludeNull(entity.getItemType(), mergedEntity.getItemType());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -122,6 +124,7 @@ public class TestSearcherConverter
         TestUtils.assertEqualsIncludeNull(dto.getAccountId(), entity.getAccountId());
         TestUtils.assertEqualsIncludeNull(dto.getName(), entity.getName());
         TestUtils.assertEqualsIncludeNull(dto.getDescription(), entity.getDescription());
+        TestUtils.assertEqualsIncludeNull(dto.getItemType().toItemType(), entity.getItemType());
         assertPredicateEquals(dto.getPredicate(), entity.getPredicateEntity());
         assertSourceWebsiteEquals(dto.getSourceWebsites(), entity.getSourceWebsites());
     }

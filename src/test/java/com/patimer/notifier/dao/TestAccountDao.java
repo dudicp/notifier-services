@@ -45,7 +45,7 @@ public class TestAccountDao extends AbstractDaoTest
         // given
 
         // when
-        AccountEntity storedAccountEntity = accountDao.create(null);
+        accountDao.create(null);
 
         // then - expected exception
     }

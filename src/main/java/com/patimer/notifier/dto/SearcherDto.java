@@ -24,6 +24,9 @@ public class SearcherDto extends ManagedObjectDto
     private String description;
 
     @NotNull
+    private ItemTypeDto itemType;
+
+    @NotNull
     private PredicateDto predicate;
 
     @NotEmpty
@@ -36,6 +39,7 @@ public class SearcherDto extends ManagedObjectDto
         UUID accountId,
         String name,
         String description,
+        ItemTypeDto itemType,
         PredicateDto predicate,
         Set<SourceWebsiteDto> sourceWebsites
     )
@@ -44,6 +48,7 @@ public class SearcherDto extends ManagedObjectDto
         this.accountId = accountId;
         this.name = name;
         this.description = description;
+        this.itemType = itemType;
         this.predicate = predicate;
         this.sourceWebsites = sourceWebsites;
     }
@@ -55,6 +60,7 @@ public class SearcherDto extends ManagedObjectDto
         UUID accountId,
         String name,
         String description,
+        ItemTypeDto itemType,
         PredicateDto predicate,
         Set<SourceWebsiteDto> sourceWebsites
     )
@@ -63,6 +69,7 @@ public class SearcherDto extends ManagedObjectDto
         this.accountId = accountId;
         this.name = name;
         this.description = description;
+        this.itemType = itemType;
         this.predicate = predicate;
         this.sourceWebsites = sourceWebsites;
     }
@@ -83,6 +90,12 @@ public class SearcherDto extends ManagedObjectDto
     public String getDescription()
     {
         return description;
+    }
+
+    @JsonProperty("itemType")
+    public ItemTypeDto getItemType()
+    {
+        return itemType;
     }
 
     @JsonProperty("predicate")
