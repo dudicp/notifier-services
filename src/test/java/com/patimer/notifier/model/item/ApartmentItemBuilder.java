@@ -15,6 +15,20 @@ public class ApartmentItemBuilder
     private SellerType sellerType = SellerType.Private;
     private AssetType assetType = AssetType.Apartment;
 
+    public ApartmentItemBuilder(){}
+
+    public ApartmentItemBuilder(ApartmentItem apartmentItem)
+    {
+        this.link = apartmentItem.getLink();
+        this.price = apartmentItem.getPrice();
+        this.numberOfRooms = apartmentItem.getNumberOfRooms();
+        this.floorNumber = apartmentItem.getFloorNumber();
+        this.area = apartmentItem.getArea();
+        this.address = apartmentItem.getAddress();
+        this.sellerType = apartmentItem.getSellerType();
+        this.assetType = apartmentItem.getAssetType();
+    }
+
     public ApartmentItemBuilder withLink(String link)
     {
         this.link = link;
