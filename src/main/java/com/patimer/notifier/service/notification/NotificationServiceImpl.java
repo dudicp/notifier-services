@@ -1,5 +1,6 @@
 package com.patimer.notifier.service.notification;
 
+import com.patimer.notifier.model.AccountEntity;
 import com.patimer.notifier.model.ItemType;
 import com.patimer.notifier.model.item.SearchedItem;
 import com.patimer.notifier.service.mail.MailMessage;
@@ -64,9 +65,9 @@ public class NotificationServiceImpl implements NotificationService
     }
 
     @Override
-    public void sendActivationCode(String email, String activationCode)
+    public void sendActivationCode(AccountEntity accountEntity, String activationCode)
     {
-        Validate.notEmpty(email);
+        Validate.notNull(accountEntity);
         Validate.notEmpty(activationCode);
 
         Template template = velocityEngine.getTemplate("templates/mail/activationCodeTemplate.vm");
@@ -78,7 +79,7 @@ public class NotificationServiceImpl implements NotificationService
         MailMessage mailMessage =
             new MailMessage(
                 fromAddress,
-                Collections.singletonList(email),
+                Collections.singletonList(accountEntity.getMail()),
                 activationCodeSubjectTemplate,
                 writer.toString()
             );
@@ -87,7 +88,7 @@ public class NotificationServiceImpl implements NotificationService
     }
 
     @Override
-    public void sendFoundNewItems(String email, ItemType itemsType, List<SearchedItem> foundItems)
+    public void sendFoundNewItems(AccountEntity accountEntity, ItemType itemsType, List<SearchedItem> foundItems)
     {
         // TODO: implement
         throw new NotImplementedException();

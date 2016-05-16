@@ -75,7 +75,7 @@ public class AccountServiceImpl implements AccountService
             else // account is in registered state.
             {
                 // should I generate a new activation code or reuse the exiting one?
-                notificationService.sendActivationCode(existingAccount.getMail(), existingAccount.getActivationCode());
+                notificationService.sendActivationCode(existingAccount, existingAccount.getActivationCode());
                 return accountConverter.convertToDto(existingAccount);
             }
         }
@@ -91,7 +91,7 @@ public class AccountServiceImpl implements AccountService
 
             // store it.
             AccountEntity storedAccountEntity = accountDao.create(accountEntity);
-            notificationService.sendActivationCode(accountEntity.getMail(), accountEntity.getActivationCode());
+            notificationService.sendActivationCode(accountEntity, accountEntity.getActivationCode());
 
             return accountConverter.convertToDto(storedAccountEntity);
         }

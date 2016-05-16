@@ -1,5 +1,7 @@
 package com.patimer.notifier.service.notification;
 
+import com.patimer.notifier.model.AccountEntity;
+import com.patimer.notifier.model.AccountEntityBuilder;
 import com.patimer.notifier.service.mail.MailMessage;
 import com.patimer.notifier.service.mail.MailSender;
 import org.junit.Before;
@@ -48,11 +50,12 @@ public class TestNotificationService
     {
         // given
         String email = "user@test.com";
+        AccountEntity accountEntity = new AccountEntityBuilder().withMail(email).build();
         String activationCode = UUID.randomUUID().toString();
         ArgumentCaptor<MailMessage> mailMessageArgumentCapture = ArgumentCaptor.forClass(MailMessage.class);
 
         // when
-        notificationService.sendActivationCode(email, activationCode);
+        notificationService.sendActivationCode(accountEntity, activationCode);
         Mockito.verify(mailSenderMock).send(mailMessageArgumentCapture.capture());
 
         // then
@@ -77,25 +80,14 @@ public class TestNotificationService
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testSendActivationCodeWithEmptyEmail()
-    {
-        // given
-        String activationCode = UUID.randomUUID().toString();
-
-        // when
-        notificationService.sendActivationCode("", activationCode);
-
-        // then - expected exception
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void testSendActivationCodeWithNullActivationCode()
     {
         // given
         String email = "user@test.com";
+        AccountEntity accountEntity = new AccountEntityBuilder().withMail(email).build();
 
         // when
-        notificationService.sendActivationCode(email, null);
+        notificationService.sendActivationCode(accountEntity, null);
 
         // then - expected exception
     }
@@ -105,9 +97,10 @@ public class TestNotificationService
     {
         // given
         String email = "user@test.com";
+        AccountEntity accountEntity = new AccountEntityBuilder().withMail(email).build();
 
         // when
-        notificationService.sendActivationCode(email, "");
+        notificationService.sendActivationCode(accountEntity, "");
 
         // then - expected exception
     }

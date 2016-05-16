@@ -10,13 +10,13 @@ public abstract class ManagedEntity
 {
     @Id
     @NotNull
-    private UUID id;
+    protected UUID id;
 
     @NotNull
-    private Date createdOn;
+    protected Date createdOn;
 
     @NotNull
-    private Date modifiedOn;
+    protected Date modifiedOn;
 
     public ManagedEntity() {} // default constructor for creation
 

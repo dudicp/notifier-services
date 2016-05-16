@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class TestAccountDao extends AbstractDaoTest
@@ -212,7 +213,7 @@ public class TestAccountDao extends AbstractDaoTest
     }
 
     @Test
-    public void testFIndByMailWhenNotFound()
+    public void testFindByMailWhenNotFound()
     {
         // given
         String mail = "unknown@unknown.com";
@@ -244,5 +245,89 @@ public class TestAccountDao extends AbstractDaoTest
         accountDao.findByMail("");
 
         // then - expected exception
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //  FindAll
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Test
+    public void testFindAllWhenFound()
+    {
+        // given
+        int offset = 0;
+        AccountEntity accountEntity =
+            new AccountEntityBuilder().withId(null).withCreatedOn(null).withModifiedOn(null).withName("test1").build();
+        AccountEntity storedAccountEntity = accountDao.create(accountEntity);
+
+        // when
+        List<AccountEntity> foundAccountEntities = accountDao.findAll(offset);
+
+        // then
+        Assert.notNull(foundAccountEntities);
+        Assert.isTrue(foundAccountEntities.size() == 1);
+    }
+
+    @Test
+    public void testFindAllWhenNotFound()
+    {
+        // given
+        int offset = 0;
+
+        // when
+        List<AccountEntity> foundAccountEntities = accountDao.findAll(offset);
+
+        // then
+        Assert.isTrue(foundAccountEntities == null || foundAccountEntities.isEmpty());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindAllWithInvalidOffset()
+    {
+        // given
+        int offset = -1;
+
+        // when
+        accountDao.findAll(offset);
+
+        // then - expected exception
+    }
+
+    @Test
+    public void testFindAllPagination()
+    {
+        // given
+        int offset = 0;
+        ((ManagedEntityDaoImpl)accountDao).setPageSize(2);
+
+        AccountEntity accountEntity1 =
+            new AccountEntityBuilder().withId(null).withCreatedOn(null).withModifiedOn(null).withName("test1").build();
+        AccountEntity accountEntity2 =
+            new AccountEntityBuilder().withId(null).withCreatedOn(null).withModifiedOn(null).withName("test2").build();
+        AccountEntity accountEntity3 =
+            new AccountEntityBuilder().withId(null).withCreatedOn(null).withModifiedOn(null).withName("test3").build();
+        AccountEntity accountEntity4 =
+            new AccountEntityBuilder().withId(null).withCreatedOn(null).withModifiedOn(null).withName("test4").build();
+        AccountEntity accountEntity5 =
+            new AccountEntityBuilder().withId(null).withCreatedOn(null).withModifiedOn(null).withName("test5").build();
+        accountDao.create(accountEntity1);
+        accountDao.create(accountEntity2);
+        accountDao.create(accountEntity3);
+        accountDao.create(accountEntity4);
+        accountDao.create(accountEntity5);
+
+        // when
+        List<AccountEntity> foundAccountEntitiesPage1 = accountDao.findAll(offset);
+        List<AccountEntity> foundAccountEntitiesPage2 = accountDao.findAll(foundAccountEntitiesPage1.size());
+        List<AccountEntity> foundAccountEntitiesPage3 = accountDao.findAll(foundAccountEntitiesPage1.size() + foundAccountEntitiesPage2.size());
+
+
+        // then
+        Assert.notNull(foundAccountEntitiesPage1);
+        Assert.notNull(foundAccountEntitiesPage2);
+        Assert.notNull(foundAccountEntitiesPage3);
+        Assert.isTrue(foundAccountEntitiesPage1.size() == 2);
+        Assert.isTrue(foundAccountEntitiesPage2.size() == 2);
+        Assert.isTrue(foundAccountEntitiesPage3.size() == 1);
     }
 }

@@ -88,7 +88,7 @@ public class TestAccountService
         Assert.notNull(storedAccountEntity.getActivationCode());
         Assert.notNull(storedAccountEntity.getUnsubscribeCode());
 
-        verify(notificationServiceMock, times(1)).sendActivationCode(storedAccountEntity.getMail(), storedAccountEntity.getActivationCode());
+        verify(notificationServiceMock, times(1)).sendActivationCode(storedAccountEntity, storedAccountEntity.getActivationCode());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -130,7 +130,7 @@ public class TestAccountService
         // then
         Assert.notNull(createdAccountDto);
 
-        verify(notificationServiceMock, times(1)).sendActivationCode(existsAccountEntity.getMail(), existsAccountEntity.getActivationCode());
+        verify(notificationServiceMock, times(1)).sendActivationCode(existsAccountEntity, existsAccountEntity.getActivationCode());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

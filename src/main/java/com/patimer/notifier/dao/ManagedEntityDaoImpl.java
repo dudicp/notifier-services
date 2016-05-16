@@ -10,14 +10,18 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class ManagedEntityDaoImpl<T extends ManagedEntity>
 {
+    private final static int DEFAULT_PAGE_SIZE = 1000;
+
     protected MongoTemplate mongoTemplate;
     protected EntityValidator validator;
     protected DbCollectionType dbCollectionType;
     protected Class<T> clazz;
+    protected int pageSize;
 
     public ManagedEntityDaoImpl(
         MongoTemplate mongoTemplate,
@@ -34,6 +38,13 @@ public abstract class ManagedEntityDaoImpl<T extends ManagedEntity>
         this.validator = validator;
         this.dbCollectionType = dbCollectionType;
         this.clazz = clazz;
+        this.pageSize = DEFAULT_PAGE_SIZE;
+    }
+
+    protected void setPageSize(int pageSize)
+    {
+        Validate.isTrue(pageSize > 0);
+        this.pageSize = pageSize;
     }
 
     public T create(T entity)
@@ -86,6 +97,13 @@ public abstract class ManagedEntityDaoImpl<T extends ManagedEntity>
             throw new NotFoundException("entity not found for id: '" + id + "'.");
 
         return existingEntity;
+    }
+
+    public List<T> findAll(int offset)
+    {
+        Validate.isTrue(offset >= 0);
+        Query pageQuery = new Query().limit(pageSize).skip(offset);
+        return mongoTemplate.find(pageQuery, clazz, dbCollectionType.getDbTableName());
     }
 
     private void validateExists(UUID id)

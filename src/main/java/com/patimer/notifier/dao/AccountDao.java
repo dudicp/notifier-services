@@ -3,6 +3,7 @@ package com.patimer.notifier.dao;
 import com.patimer.notifier.model.AccountEntity;
 import com.patimer.notifier.service.exception.NotFoundException;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface AccountDao
@@ -16,4 +17,6 @@ public interface AccountDao
     AccountEntity getById(UUID id) throws NotFoundException;
 
     AccountEntity findByMail(String mail);
+
+    List<AccountEntity> findAll(int offset);
 }
