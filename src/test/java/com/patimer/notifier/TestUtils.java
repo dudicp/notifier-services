@@ -2,9 +2,12 @@ package com.patimer.notifier;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.patimer.notifier.service.authentication.SessionPrincipal;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,5 +49,10 @@ public class TestUtils
     public static void assertEqualsIncludeNull(Object o1, Object o2)
     {
         Assert.isTrue(equalsIncludeNull(o1, o2));
+    }
+
+    public static Principal createPrincipal(SessionPrincipal sessionPrincipal)
+    {
+        return new UsernamePasswordAuthenticationToken(sessionPrincipal, null /*credentials*/);
     }
 }

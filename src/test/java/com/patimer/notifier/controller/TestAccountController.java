@@ -125,7 +125,7 @@ public class TestAccountController
         AccountDto returnedAccountDto = new AccountDtoBuilder().build();
         when(accountServiceMock.update(any(AccountDto.class))).thenReturn(returnedAccountDto);
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().withAccountId(accountDto.getId()).withMail(mail).build();
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -153,7 +153,7 @@ public class TestAccountController
         AccountDto returnedAccountDto = new AccountDtoBuilder().build();
         when(accountServiceMock.update(any(AccountDto.class))).thenReturn(returnedAccountDto);
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().withMail(mail).build();
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -178,7 +178,7 @@ public class TestAccountController
         AccountDto returnedAccountDto = new AccountDtoBuilder().build();
         when(accountServiceMock.update(any(AccountDto.class))).thenReturn(returnedAccountDto);
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().withMail(mail).build();
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -229,7 +229,7 @@ public class TestAccountController
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().withMail(mail).build();
         AccountDto accountDto = new AccountDtoBuilder().withId(sessionPrincipal.getAccountId()).withMail(mail).build();
         when(accountServiceMock.getById(sessionPrincipal.getAccountId())).thenReturn(accountDto);
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -299,7 +299,7 @@ public class TestAccountController
         String mail = "cesc@gunners.com";
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().withMail(mail).build();
         when(accountServiceMock.getById(sessionPrincipal.getAccountId())).thenThrow(new NotFoundException("unit-test"));
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -324,7 +324,7 @@ public class TestAccountController
         // given
         String mail = "cesc@gunners.com";
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().withMail(mail).build();
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -423,7 +423,7 @@ public class TestAccountController
         // given
         ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDtoBuilder().build();
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().build();
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -445,7 +445,7 @@ public class TestAccountController
     {
         // given
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().build();
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
 
         // when
         ResultActions resultActions =
@@ -487,7 +487,7 @@ public class TestAccountController
         // given
         ChangePasswordRequestDto changePasswordRequestDto = new ChangePasswordRequestDtoBuilder().build();
         SessionPrincipal sessionPrincipal = new SessionPrincipalBuilder().build();
-        Principal principal = createPrincipal(sessionPrincipal);
+        Principal principal = TestUtils.createPrincipal(sessionPrincipal);
         doThrow(new BadCredentialsException("unit-tests")).when(accountServiceMock).changePassword(any(UUID.class), any(ChangePasswordRequestDto.class));
 
         // when
@@ -618,14 +618,5 @@ public class TestAccountController
 
         // then
         ControllerAssert.isStatusBadRequest(resultActions);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Private Methods
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private Principal createPrincipal(SessionPrincipal sessionPrincipal)
-    {
-        return new UsernamePasswordAuthenticationToken(sessionPrincipal, null /*credentials*/);
     }
 }

@@ -24,6 +24,10 @@
         <constructor-arg value="com.patimer.notifier.service.AccountService"/>
     </bean>
 
+    <bean id="searcherService" name="searcherService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.patimer.notifier.service.SearcherService"/>
+    </bean>
+
 
     <!-- Databae Configurations -->
     <mongo:mongo host="127.0.0.1" port="27017" />
